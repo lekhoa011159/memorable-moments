@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { memoriesActions } from "../../actions";
 import { Container, Grid, Grow } from "@mui/material";
 import Form from "../Form";
+import FormSearch from "../FormSearch";
 import Moments from "../Moments";
 import CreatedStatusSnackbar from "./Snackbar";
 
@@ -15,7 +16,6 @@ const Main = () => {
 
   useEffect(() => {
     dispatch(memoriesActions.get());
-    console.log("how many time fetch");
   }, [dispatch]);
 
   const handleEditMemory = (item) => {
@@ -61,6 +61,7 @@ const Main = () => {
             <Moments callbackHandler={callbackHandler} />
           </Grid>
           <Grid item xs={4}>
+            <FormSearch />
             <Form
               callbackHandler={callbackHandler}
               selectedMemory={selectedMemory}

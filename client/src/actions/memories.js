@@ -6,9 +6,9 @@ const sleep = (sec) => new Promise((resolve) => setTimeout(resolve, sec));
 
 export const searchMemories = createAsyncThunk(
   "memories/search",
-  async (query = "") => {
+  async (query) => {
     const { data } = await axios.get(
-      `http://localhost:5000/apis/posts/v1${query}`
+      `http://localhost:5000/apis/posts/v1?title=${query}`
     );
     return data;
   }

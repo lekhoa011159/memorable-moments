@@ -31,9 +31,9 @@ const memoriesSlice = createSlice({
       .addCase(remove.rejected, memoriesBuilder.remove.rejected)
 
       // search builder
-      .addCase(search.pending, memoriesBuilder.search.pending)
-      .addCase(search.fulfilled, memoriesBuilder.search.fulfilled)
-      .addCase(search.rejected, memoriesBuilder.search.rejected)
+      // .addCase(search.pending, memoriesBuilder.search.pending)
+      // .addCase(search.fulfilled, memoriesBuilder.search.fulfilled)
+      // .addCase(search.rejected, memoriesBuilder.search.rejected)
 
       // update builder
       .addCase(update.pending, memoriesBuilder.update.pending)

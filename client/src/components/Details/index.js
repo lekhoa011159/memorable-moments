@@ -1,13 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  Paper,
-  Typography,
-  Container,
-  Grow,
-  Box,
-  Avatar,
-  Skeleton,
-} from "@mui/material";
+import { Paper, Typography, Container, Grow, Box, Avatar } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useParams } from "react-router-dom";
@@ -16,6 +8,7 @@ import { getMemoryItem, getRecommendItem } from "../../actions/memory";
 import RecommendMemory from "./Recommend";
 import CONSTANTS from "./const";
 import sx from "./styles";
+import LoadingSkeleton from "./Loading";
 
 const DetailsPage = (props) => {
   const dispatch = useDispatch();
@@ -37,9 +30,6 @@ const DetailsPage = (props) => {
   }, [dispatch, selectedItem]);
 
   const renderThumbnail = () => {
-    if (isLoading) {
-      return <Skeleton variant="rectangular" animation="wave" width="100%" />;
-    }
     return (
       <Box sx={sx.Thumbnail}>
         <img src={thumbnail} alt="thumbnail-item" />
@@ -90,8 +80,8 @@ const DetailsPage = (props) => {
   }
 
   if (!selectedItem && isLoading) {
-    // TODO: render <Skeleton />
-    return <Skeleton />;
+    // if (!isLoading || isLoading) {
+    return <LoadingSkeleton />;
   }
 
   const { thumbnail, title, author, content, createdAt, tags } = selectedItem;

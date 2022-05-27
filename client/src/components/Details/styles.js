@@ -26,6 +26,11 @@ const sx = {
     marginTop: (theme) => theme.spacing(0.5),
     marginRight: (theme) => theme.spacing(1),
   },
+  PaperLoading: {
+    borderRadius: 5,
+    mt: (theme) => theme.spacing(1.5),
+    display: "flex",
+  },
 };
 
 export default sx;

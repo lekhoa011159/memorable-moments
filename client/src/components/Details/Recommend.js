@@ -22,7 +22,8 @@ const RecommendMemory = (props) => {
   }
 
   if (recommendItems.length === 0) {
-    return <div>No recommend item to show...</div>;
+    // TODO: Show no item component
+    return <></>;
   }
 
   const handleNavigateItem = (navigatedId) => {

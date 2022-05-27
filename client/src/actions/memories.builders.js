@@ -70,7 +70,6 @@ const builders = {
   create: createBuilder,
   remove: removeBuilder,
   update: updateBuilder,
-  search: getAllBuilder,
 };
 
 export default builders;
