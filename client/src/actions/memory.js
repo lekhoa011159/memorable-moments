@@ -23,6 +23,7 @@ export const getRecommendItem = createAsyncThunk(
     const { tags, _id } = item;
     let query = `&withId=${_id}`;
     if (tags !== "") query = `?tags=${tags}${query}`;
+    else query = `?withId=${_id}`;
 
     try {
       const { data } = await axios.get(

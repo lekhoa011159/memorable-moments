@@ -1,14 +1,19 @@
 const getAllBuilder = {
   pending: (state) => {
     state.loading = true;
+    state.isSearched = false;
   },
   fulfilled: (state, { payload }) => {
+    const { data, isSearched, totalCounted } = payload;
     state.loading = false;
-    state.list = payload;
+    state.list = data;
+    state.isSearched = isSearched;
+    state.totalCounted = totalCounted;
   },
   rejected: (state, { payload }) => {
     state.loading = false;
     state.error = payload;
+    state.isSearched = false;
   },
 };
 
@@ -51,10 +56,8 @@ const updateBuilder = {
   },
   fulfilled: (state, { payload }) => {
     state.loading = false;
-    console.log(payload);
     state.list = state.list.map((memory) => {
       if (memory._id === payload._id) {
-        console.log(memory._id);
         return payload;
       }
       return memory;

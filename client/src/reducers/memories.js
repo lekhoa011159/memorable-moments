@@ -2,12 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 import { memoriesActions } from "../actions";
 import memoriesBuilder from "../actions/memories.builders";
 
-const { create, get, remove, search, update } = memoriesActions;
+const { create, get, remove, update } = memoriesActions;
 
 const initialState = {
   list: [],
   loading: true,
   error: null,
+  isSearched: false,
+  totalCounted: 0,
 };
 
 const memoriesSlice = createSlice({
@@ -29,11 +31,6 @@ const memoriesSlice = createSlice({
       .addCase(remove.pending, memoriesBuilder.remove.pending)
       .addCase(remove.fulfilled, memoriesBuilder.remove.fulfilled)
       .addCase(remove.rejected, memoriesBuilder.remove.rejected)
-
-      // search builder
-      // .addCase(search.pending, memoriesBuilder.search.pending)
-      // .addCase(search.fulfilled, memoriesBuilder.search.fulfilled)
-      // .addCase(search.rejected, memoriesBuilder.search.rejected)
 
       // update builder
       .addCase(update.pending, memoriesBuilder.update.pending)

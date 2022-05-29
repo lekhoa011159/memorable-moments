@@ -22,6 +22,10 @@ const DetailsPage = (props) => {
   }, [dispatch, params]);
 
   useEffect(() => {
+    props.toggleSearchbarShow(false);
+  }, [props]);
+
+  useEffect(() => {
     (async () => {
       if (selectedItem) {
         dispatch(getRecommendItem(selectedItem));
@@ -50,7 +54,7 @@ const DetailsPage = (props) => {
           </Box>
         </Box>
         <Typography variant="body2" color="textSecondary">
-          {tags.split(",").map((tag) => `#${tag} `)}
+          {tags.map((tag) => `#${tag} `)}
         </Typography>
         <Typography gutterBottom variant="h4">
           {title}
@@ -105,11 +109,13 @@ const DetailsPage = (props) => {
             {renderContent()}
           </Box>
 
-          <RecommendMemory
-            isLoading={isLoading}
-            recommendItems={listItems}
-            callbackHandler={callbackHandler}
-          />
+          {listItems && listItems.length > 0 && (
+            <RecommendMemory
+              isLoading={isLoading}
+              recommendItems={listItems}
+              callbackHandler={callbackHandler}
+            />
+          )}
         </Paper>
       </Container>
     </Grow>

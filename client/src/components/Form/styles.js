@@ -1,6 +1,14 @@
 const sx = {
   Paper: { padding: (theme) => theme.spacing(2) },
 
+  LabelBtnUpload: {
+    display: "flex",
+    alignItems: "center",
+    width: "100%",
+    margin: "0 8px",
+    overflow: "hidden",
+  },
+
   BoxFormFlex: {
     display: "flex",
     flexWrap: "wrap",
@@ -29,6 +37,14 @@ const sx = {
   FormFooterResetBtn: {
     margin: (theme) => theme.spacing(1),
     marginTop: 0,
+  },
+
+  OverflowText: {
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    display: "-webkit-box",
+    WebkitLineClamp: 1,
+    WebkitBoxOrient: "vertical",
   },
 };
 

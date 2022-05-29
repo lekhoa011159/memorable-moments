@@ -8,6 +8,7 @@ import sx from "./styles";
 import FormContent from "./FormContent";
 import FormFooter from "./FormFooter";
 import CONSTANTS from "./const";
+import { getAll } from "../../actions/memories";
 
 const Form = (props) => {
   const [postCreator, setPostCreator] = useState("");
@@ -21,7 +22,7 @@ const Form = (props) => {
       const { title, content, author, tags, thumbnail } = props.selectedMemory;
       setPostTitle(title);
       setPostContent(content);
-      setPostTags(tags);
+      setPostTags(tags.join(","));
       setPostCreator(author);
       setPostThumbnail(thumbnail);
     }
@@ -44,6 +45,7 @@ const Form = (props) => {
         setPostTags(value);
         break;
       case CONSTANTS.ADD_THUMBNAIL:
+        console.log(value);
         setPostThumbnail(value);
         break;
       case CONSTANTS.RESET_INPUT:
@@ -72,7 +74,10 @@ const Form = (props) => {
       author: postCreator.trim(),
       title: postTitle.trim(),
       content: postContent.trim(),
-      tags: postTags.trim(),
+      tags: postTags
+        .trim()
+        .split(",")
+        .filter((tag) => tag !== ""),
       thumbnail: postThumbnail,
       createdAt: new Date().toString(),
     };
@@ -94,6 +99,7 @@ const Form = (props) => {
       const createdData = await dispatch(memoriesActions.create(payload));
       if (createdData.payload) {
         status = "success";
+        dispatch(getAll());
       }
     }
 
@@ -110,7 +116,9 @@ const Form = (props) => {
     setPostTags("");
     setPostCreator("");
     setPostThumbnail("");
-    document.querySelector("input[type='file']").value = "";
+    document.querySelector("p#selected-filename").textContent =
+      "No file chosen";
+    props.callbackHandler("EDIT_MEMORY", null);
   };
 
   return (

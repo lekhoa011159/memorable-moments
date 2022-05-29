@@ -4,16 +4,6 @@ import axios from "axios";
 // fake loading for effect purpose
 const sleep = (sec) => new Promise((resolve) => setTimeout(resolve, sec));
 
-export const searchMemories = createAsyncThunk(
-  "memories/search",
-  async (query) => {
-    const { data } = await axios.get(
-      `http://localhost:5000/apis/posts/v1?title=${query}`
-    );
-    return data;
-  }
-);
-
 export const removeMemory = createAsyncThunk(
   "memories/delete",
   async (query) => {
@@ -28,16 +18,51 @@ export const removeMemory = createAsyncThunk(
   }
 );
 
-export const getAll = createAsyncThunk("memories/get", async () => {
-  try {
-    const { data } = await axios.get("http://localhost:5000/apis/posts/v1");
-    if (data && data.length > 0) await sleep(2000);
-    return data;
-  } catch (err) {
-    console.log(`Error: ${err}`);
-    throw err;
+export const getAll = createAsyncThunk(
+  "memories/get",
+  async (searchQuery, thunkAPI) => {
+    try {
+      let url = "http://localhost:5000/apis/posts/v1";
+      if (searchQuery) {
+        const { title, author, offset } = searchQuery;
+        url += "?";
+        if (title) url += `title=${encodeURIComponent(title)}`;
+        if (author) url += `&author=${encodeURIComponent(author)}`;
+        if (offset) url += `&offset=${offset}`;
+      }
+      const { data } = await axios.get(url);
+      const {
+        payload: { totalCounted },
+      } = await thunkAPI.dispatch(getTotal(searchQuery));
+
+      if (data && data.length > 0) await sleep(2000);
+      return { data, isSearched: Boolean(searchQuery), totalCounted };
+    } catch (err) {
+      console.log(`Error: ${err}`);
+      throw err;
+    }
   }
-});
+);
+
+export const getTotal = createAsyncThunk(
+  "memories/getTotal",
+  async (searchQuery) => {
+    try {
+      let url = "http://localhost:5000/apis/posts/v1/totalCount";
+      if (searchQuery) {
+        const { title, author } = searchQuery;
+        url += "?";
+        if (title) url += `title=${encodeURIComponent(title)}`;
+        if (author) url += `&author=${encodeURIComponent(author)}`;
+      }
+      const { data } = await axios.get(url);
+      return data;
+    } catch (err) {
+      console.log(`Error: ${err}`);
+      throw err;
+    }
+  }
+);
 
 export const createMemory = createAsyncThunk(
   "memories/create",

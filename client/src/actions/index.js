@@ -1,10 +1,4 @@
-import {
-  createMemory,
-  removeMemory,
-  updateMemory,
-  searchMemories,
-  getAll,
-} from "./memories";
+import { createMemory, removeMemory, updateMemory, getAll } from "./memories";
 
 import { getMemoryItem, getRecommendItem } from "./memory";
 
@@ -13,7 +7,6 @@ export const memoriesActions = {
   create: createMemory,
   remove: removeMemory,
   update: updateMemory,
-  search: searchMemories,
   getItem: getMemoryItem,
   getRecommend: getRecommendItem,
 };

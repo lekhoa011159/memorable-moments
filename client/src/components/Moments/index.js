@@ -60,7 +60,7 @@ const Moments = (props) => {
   if (isLoading && listMemories.length === 0) {
     return (
       <Grid container columns={12} spacing={2}>
-        {[1, 2, 3, 4].map((value) => (
+        {[1, 2].map((value) => (
           <MemoryItem isLoading={isLoading} key={value} item={{}} />
         ))}
       </Grid>

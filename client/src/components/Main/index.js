@@ -1,25 +1,74 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { memoriesActions } from "../../actions";
-import { Container, Grid, Grow } from "@mui/material";
+import { Container, Grid, Grow, Chip, Stack, Pagination } from "@mui/material";
 import Form from "../Form";
-import FormSearch from "../FormSearch";
 import Moments from "../Moments";
 import CreatedStatusSnackbar from "./Snackbar";
+import { getAll } from "../../actions/memories";
+import sx from "./styles";
 
-const Main = () => {
+const Main = (props) => {
   const dispatch = useDispatch();
+  const isSearched = useSelector((state) => state.memories.isSearched);
+  const isLoading = useSelector((state) => state.memories.isLoading);
+  const totalCounted = useSelector((state) => state.memories.totalCounted);
+
   const [selectedMemory, setSelectedMemory] = useState(null);
   const [isSnackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarStatus, setSnackbarStatus] = useState("success");
   const [snackbarAction, setSnackbarAction] = useState("");
+  const { searchObject, toggleSearchbarShow } = props;
 
   useEffect(() => {
     dispatch(memoriesActions.get());
-  }, [dispatch]);
+    toggleSearchbarShow(true);
+  }, [dispatch, toggleSearchbarShow]);
 
-  const handleEditMemory = (item) => {
-    setSelectedMemory(item);
+  const renderSearchedChip = () => {
+    return Object.keys(searchObject).map((searchKey) => {
+      if (searchObject[searchKey] !== "") {
+        return (
+          <Chip
+            key={searchKey}
+            sx={sx.Chip}
+            label={`by ${searchKey}: ${searchObject[searchKey]}`}
+            color="secondary"
+            onDelete={handleDeleteSearch(searchKey)}
+          />
+        );
+      }
+      return null;
+    });
+  };
+
+  const renderPagination = () => {
+    return (
+      <Stack spacing={2}>
+        {totalCounted > 2 && (
+          <Pagination
+            count={calculatedCountPagination()}
+            color="secondary"
+            onChange={handleGetByOffset}
+            sx={sx.Pagination}
+          />
+        )}
+      </Stack>
+    );
+  };
+
+  const calculatedCountPagination = () => {
+    // <=> 2 items/page
+    const totalPage = Math.round(totalCounted / 2);
+    return totalPage;
+  };
+
+  const handleGetByOffset = (evt, offset) => {
+    if (isSearched) {
+      dispatch(getAll({ offset, ...searchObject }));
+    } else {
+      dispatch(getAll({ offset }));
+    }
   };
 
   const callbackHandler = (actionType, value) => {
@@ -36,6 +85,16 @@ const Main = () => {
     }
   };
 
+  const handleDeleteSearch = (searchKey) => () => {
+    const modifiedSearchObject = { ...searchObject, [searchKey]: "" };
+    props.onChangeSearch(modifiedSearchObject);
+    dispatch(getAll(modifiedSearchObject));
+  };
+
+  const handleEditMemory = (item) => {
+    setSelectedMemory(item);
+  };
+
   const handleValidateSnackbarStatus = ({ open, type, status }) => {
     setSnackbarOpen(open);
     setSnackbarAction(type);
@@ -49,7 +108,7 @@ const Main = () => {
 
   return (
     <Grow in>
-      <Container sx={{ marginTop: (theme) => theme.spacing(2), padding: 0 }}>
+      <Container sx={sx.Container}>
         <Grid
           container
           justifyContent="space-between"
@@ -58,10 +117,11 @@ const Main = () => {
           columns={12}
         >
           <Grid item xs={8}>
+            {isSearched && renderSearchedChip()}
             <Moments callbackHandler={callbackHandler} />
+            {!isLoading && renderPagination()}
           </Grid>
           <Grid item xs={4}>
-            <FormSearch />
             <Form
               callbackHandler={callbackHandler}
               selectedMemory={selectedMemory}

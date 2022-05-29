@@ -1,5 +1,0 @@
-const CONSTANTS = {
-  SEARCH_MEMORIES: "SEARCH_MEMORIES",
-};
-
-export default CONSTANTS;

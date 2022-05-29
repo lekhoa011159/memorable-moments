@@ -17,15 +17,6 @@ const RecommendMemory = (props) => {
   const { recommendItems, isLoading } = props;
   const navigate = useNavigate();
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (recommendItems.length === 0) {
-    // TODO: Show no item component
-    return <></>;
-  }
-
   const handleNavigateItem = (navigatedId) => {
     navigate(`/${navigatedId}`, { replace: true });
   };
@@ -45,7 +36,7 @@ const RecommendMemory = (props) => {
               />
               <CardContent>
                 <Typography variant="body2" color="textSecondary" gutterBottom>
-                  {tags.split(",").map((tag) => `#${tag} `)}
+                  {tags.map((tag) => `#${tag} `)}
                 </Typography>
                 <Typography variant="h5">{title}</Typography>
                 <Typography
@@ -72,7 +63,8 @@ const RecommendMemory = (props) => {
       </Typography>
       <Divider variant="middle" />
       <Grid container columns={24}>
-        {recommendItems.length > 0 &&
+        {recommendItems &&
+          recommendItems.length > 0 &&
           recommendItems.map((item) => renderItem(item))}
       </Grid>
     </Box>

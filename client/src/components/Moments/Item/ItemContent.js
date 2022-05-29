@@ -49,7 +49,10 @@ const ItemContent = (props) => {
 
     return (
       <Typography variant="body2" color="textSecondary" gutterBottom>
-        {tags.split(",").map((tag) => `#${tag} `)}
+        {tags.map((tag) => {
+          if (tag !== "") return `#${tag} `;
+          return "";
+        })}
       </Typography>
     );
   };
@@ -125,14 +128,14 @@ ItemContent.propTypes = {
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   callbackHandler: PropTypes.func,
   isLoading: PropTypes.bool,
-  tags: PropTypes.string,
+  tags: PropTypes.array,
   thumbnail: PropTypes.string,
 };
 
 ItemContent.defaultProps = {
   title: "",
   content: "",
-  tags: "",
+  tags: [""],
   thumbnail: "",
   id: "",
   callbackHandler: () => {},

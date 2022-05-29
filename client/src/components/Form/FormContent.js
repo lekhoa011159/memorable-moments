@@ -1,20 +1,36 @@
-import React from "react";
-import { TextField, Box } from "@mui/material";
+import React, { useState } from "react";
+import { TextField, Button, Typography } from "@mui/material";
 import PropTypes from "prop-types";
-import FileBase64 from "react-file-base64";
+import Resizer from "react-image-file-resizer";
 
 import sx from "./styles";
 import CONST from "./const";
 
 const FormContent = (props) => {
+  const [selectedFilename, changeSelectedFilename] = useState("No file chosen");
   const { title, content, tags, creator, callbackHandler } = props;
 
   const handleChange = (changeType) => (e) => {
     callbackHandler(changeType, e.target.value);
   };
 
-  const handleUploadFile = ({ base64 }) => {
-    callbackHandler(CONST.ADD_THUMBNAIL, base64);
+  const handleUploadFile = async (evt) => {
+    const { files } = await evt.target;
+    const file = files[0];
+    if (file) {
+      const { name, type } = file;
+
+      await changeSelectedFilename(name);
+      await Resizer.imageFileResizer(
+        file,
+        400,
+        400,
+        type.split("/")[1],
+        100,
+        0,
+        (uri) => callbackHandler(CONST.ADD_THUMBNAIL, uri)
+      );
+    }
   };
 
   return (
@@ -48,16 +64,40 @@ const FormContent = (props) => {
       />
       <TextField
         fullWidth
-        label="Tags"
+        label="Tags (seperate by comma)"
         size="small"
         variant="outlined"
         value={tags}
         onChange={handleChange(CONST.CHANGE_TAGS)}
       />
 
-      <Box sx={sx.BoxFormFileBase}>
+      {/* <Box sx={sx.BoxFormFileBase}>
         <FileBase64 multiple={false} onDone={handleUploadFile} />
-      </Box>
+      </Box> */}
+      <label
+        title={selectedFilename}
+        style={sx.LabelBtnUpload}
+        htmlFor="contained-button-file"
+      >
+        <input
+          accept="image/*"
+          id="contained-button-file"
+          type="file"
+          onChange={handleUploadFile}
+          style={{ display: "none" }}
+        />
+        <Button
+          sx={{ mr: (theme) => theme.spacing(1) }}
+          variant="outlined"
+          component="span"
+          color="secondary"
+        >
+          Upload
+        </Button>
+        <Typography id="selected-filename" variant="body2" sx={sx.OverflowText}>
+          {selectedFilename}
+        </Typography>
+      </label>
     </>
   );
 };

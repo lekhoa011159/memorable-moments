@@ -21,8 +21,8 @@ const postSchema = new mongoose.Schema({
     default: "",
   },
   tags: {
-    type: String,
-    default: "",
+    type: [String],
+    default: [""],
   },
   createdAt: {
     type: Date,
