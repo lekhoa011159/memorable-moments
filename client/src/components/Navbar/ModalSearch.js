@@ -41,26 +41,26 @@ const ModalSearch = (props) => {
             value={searchObject["title"]}
             onChange={handleChangeText("title")}
           />
-          {/* <TextField
-            disabled
-            margin="normal"
-            fullWidth
-            autoFocus
-            label="By Tags (coming soon)"
-            variant="outlined"
-            // value={tags}
-            onChange={handleChangeText("tags")}
-          />
-           */}
+
           <TextField
             margin="normal"
             fullWidth
-            autoFocus
             label="By Author"
             variant="outlined"
             value={searchObject["author"]}
             onChange={handleChangeText("author")}
           />
+
+          <TextField
+            disabled
+            margin="normal"
+            fullWidth
+            label="By Tags (coming soon)"
+            variant="outlined"
+            value=""
+            // onChange={handleChangeText("tags")}
+          />
+
           <Button
             sx={{ marginTop: (theme) => theme.spacing(1) }}
             fullWidth

@@ -12,10 +12,12 @@ import LoadingSkeleton from "./Loading";
 
 const DetailsPage = (props) => {
   const dispatch = useDispatch();
+  const params = useParams();
   const selectedItem = useSelector((state) => state.memory.memoryItem);
   const isLoading = useSelector((state) => state.memory.loading);
   const listItems = useSelector((state) => state.memory.recommendItems);
-  const params = useParams();
+  const fallbackImg =
+    "https://raw.githubusercontent.com/koehlersimon/fallback/master/Resources/Public/Images/placeholder.jpg";
 
   useEffect(() => {
     dispatch(getMemoryItem(params.id));
@@ -36,7 +38,10 @@ const DetailsPage = (props) => {
   const renderThumbnail = () => {
     return (
       <Box sx={sx.Thumbnail}>
-        <img src={thumbnail} alt="thumbnail-item" />
+        <img
+          src={thumbnail === "" ? fallbackImg : thumbnail}
+          alt="thumbnail-item"
+        />
       </Box>
     );
   };
@@ -114,6 +119,7 @@ const DetailsPage = (props) => {
               isLoading={isLoading}
               recommendItems={listItems}
               callbackHandler={callbackHandler}
+              fallbackImg={fallbackImg}
             />
           )}
         </Paper>

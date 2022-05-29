@@ -1,9 +1,10 @@
 import { createTheme } from "@mui/material/styles";
-import green from "@mui/material/colors/green";
+import purple from "@mui/material/colors/purple";
 
 export const theme = createTheme({
   palette: {
-    primary: { main: green["A700"] },
+    // primary: { main: green["A700"] },
+    secondary: { main: purple["A200"] },
   },
 });
 
@@ -18,11 +19,15 @@ const sx = {
     textTransform: "none",
     justifyContent: "space-between",
     minWidth: 200,
+    borderColor: "#fff",
+    color: "#fff",
     borderRadius: "12px !important",
     padding: "5px",
+    margin: 0,
+    width: "100%",
     "& #hotkey-search": {
       padding: "0 5px !important",
-      border: (theme) => `1px solid ${theme.palette.secondary.main}`,
+      border: (theme) => `1px solid #fff`,
       borderRadius: (theme) => theme.spacing(1),
     },
   },

@@ -14,7 +14,7 @@ import PropTypes from "prop-types";
 import sx from "./styles";
 
 const RecommendMemory = (props) => {
-  const { recommendItems, isLoading } = props;
+  const { recommendItems, isLoading, fallbackImg } = props;
   const navigate = useNavigate();
 
   const handleNavigateItem = (navigatedId) => {
@@ -31,7 +31,7 @@ const RecommendMemory = (props) => {
               <CardMedia
                 component="img"
                 height="140"
-                image={thumbnail}
+                image={thumbnail === "" ? fallbackImg : thumbnail}
                 alt={`postThumbnail-${id}`}
               />
               <CardContent>

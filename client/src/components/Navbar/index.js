@@ -9,13 +9,14 @@ import {
   IconButton,
   Button,
   Box,
+  ThemeProvider,
 } from "@mui/material";
-import BookIcon from "@mui/icons-material/Book";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SearchIcon from "@mui/icons-material/Search";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
-import sx from "./styles";
+import sx, { theme } from "./styles";
 import ModalSearch from "./ModalSearch";
 import CONSTANTS from "./consts";
 import { getAll } from "../../actions/memories";
@@ -90,25 +91,9 @@ const Navbar = (props) => {
     return (
       <Grid item xs={8}>
         <Grid container alignItems="center">
-          {/* <BookIcon sx={{ fontSize: "3rem" }} /> */}
-          <Typography
-            noWrap
-            variant="h6"
-            component="a"
-            href="/"
-            sx={{
-              fontFamily: "monospace",
-              fontWeight: 700,
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            MEMORIES MOMENT
-          </Typography>
-
-          {/* <div>
-            <img src="/Logo.png" alt="Logo" />
-          </div> */}
+          <Link style={{ marginLeft: 24 }} to="/">
+            <img height={80} src="/Logo.png" alt="Logo" />
+          </Link>
         </Grid>
       </Grid>
     );
@@ -122,6 +107,7 @@ const Navbar = (props) => {
             <Button
               color="secondary"
               variant="outlined"
+              size="large"
               onClick={showDialogSearch}
               sx={sx.SearchButton}
             >
@@ -129,9 +115,7 @@ const Navbar = (props) => {
                 <SearchIcon />
                 <Typography variant="body2">Search...</Typography>
               </Box>
-              <div id="hotkey-search" style={sx.HotkeySearch}>
-                Ctrl + K
-              </div>
+              <div id="hotkey-search">Ctrl + K</div>
             </Button>
           )}
 
@@ -152,19 +136,21 @@ const Navbar = (props) => {
   };
 
   return (
-    <div onKeyUp={handleBindingSearchHotkey}>
-      <AppBar color="inherit" position="static" sx={{ borderRadius: 2 }}>
-        <Container maxWidth="xl">
-          <Toolbar disableGutters>
-            <Grid container columns={12}>
-              {renderLeftsideNavbar()}
-              {renderRightsideNavbar()}
-            </Grid>
-          </Toolbar>
-        </Container>
-      </AppBar>
-      <ModalSearch callbackHandler={callbackHandler} isOpen={dialogOpen} />
-    </div>
+    <ThemeProvider theme={theme}>
+      <div onKeyUp={handleBindingSearchHotkey}>
+        <AppBar color="secondary" position="static" sx={{ borderRadius: 2 }}>
+          <Container maxWidth="xl">
+            <Toolbar disableGutters>
+              <Grid container columns={12}>
+                {renderLeftsideNavbar()}
+                {renderRightsideNavbar()}
+              </Grid>
+            </Toolbar>
+          </Container>
+        </AppBar>
+        <ModalSearch callbackHandler={callbackHandler} isOpen={dialogOpen} />
+      </div>
+    </ThemeProvider>
   );
 };
 

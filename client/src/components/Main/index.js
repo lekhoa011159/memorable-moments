@@ -18,6 +18,7 @@ const Main = (props) => {
   const [isSnackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarStatus, setSnackbarStatus] = useState("success");
   const [snackbarAction, setSnackbarAction] = useState("");
+  const [offset, onChangeOffset] = useState(1);
   const { searchObject, toggleSearchbarShow } = props;
 
   useEffect(() => {
@@ -63,11 +64,12 @@ const Main = (props) => {
     return totalPage;
   };
 
-  const handleGetByOffset = (evt, offset) => {
+  const handleGetByOffset = (evt, os) => {
+    onChangeOffset(os);
     if (isSearched) {
-      dispatch(getAll({ offset, ...searchObject }));
+      dispatch(getAll({ offset: os, ...searchObject }));
     } else {
-      dispatch(getAll({ offset }));
+      dispatch(getAll({ offset: os }));
     }
   };
 
@@ -99,6 +101,15 @@ const Main = (props) => {
     setSnackbarOpen(open);
     setSnackbarAction(type);
     setSnackbarStatus(status);
+
+    if (type === "DELETE") {
+      // after delete fetch all again.
+      if (isSearched) {
+        dispatch(getAll({ offset, ...searchObject }));
+      } else {
+        dispatch(getAll({ offset }));
+      }
+    }
 
     if (type === "CLOSE") {
       setSnackbarAction("");
