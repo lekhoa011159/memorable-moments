@@ -9,7 +9,7 @@ export const removeMemory = createAsyncThunk(
   async (query) => {
     if (query !== "") {
       const { status } = await axios.delete(
-        `http://localhost:5000/apis/posts/v1?id=${query}`
+        `https://salty-beyond-20522.herokuapp.com/apis/posts/v1?id=${query}`
       );
       await sleep(1500);
       if (status === 200) return query;
@@ -22,7 +22,7 @@ export const getAll = createAsyncThunk(
   "memories/get",
   async (searchQuery, thunkAPI) => {
     try {
-      let url = "http://localhost:5000/apis/posts/v1";
+      let url = "https://salty-beyond-20522.herokuapp.com/apis/posts/v1";
       if (searchQuery) {
         const { title, author, offset } = searchQuery;
         url += "?";
@@ -48,7 +48,7 @@ export const getTotal = createAsyncThunk(
   "memories/getTotal",
   async (searchQuery) => {
     try {
-      let url = "http://localhost:5000/apis/posts/v1/totalCount";
+      let url = "https://salty-beyond-20522.herokuapp.com/apis/posts/v1/totalCount";
       if (searchQuery) {
         const { title, author } = searchQuery;
         url += "?";
@@ -67,7 +67,7 @@ export const getTotal = createAsyncThunk(
 export const createMemory = createAsyncThunk(
   "memories/create",
   async (post) => {
-    const res = await axios.post("http://localhost:5000/apis/posts/v1", post);
+    const res = await axios.post("https://salty-beyond-20522.herokuapp.com/apis/posts/v1", post);
     const { status, data } = res;
 
     if (status === 200) {
@@ -82,7 +82,7 @@ export const createMemory = createAsyncThunk(
 export const updateMemory = createAsyncThunk(
   "memories/update",
   async (post) => {
-    const res = await axios.put("http://localhost:5000/apis/posts/v1", post);
+    const res = await axios.put("https://salty-beyond-20522.herokuapp.com/apis/posts/v1", post);
     const { status } = res;
 
     if (status === 200) {

@@ -16,6 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false, limit: "50mb" }));
 app.use(bodyParser.json({ limit: "50mb" }));
 
 // routes
+app.get("/", (req, res) => res.status(200).send(`IT WORKED !!`));
 app.use("/apis/posts/v1", posts);
 
 app.listen(process.env.PORT || 5000, () => {
